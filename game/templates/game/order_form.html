@@ -1,0 +1,400 @@
+<!DOCTYPE html>
+<html lang="bg">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Поръчка | Catch the Forest</title>
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background:
+                linear-gradient(rgba(8, 28, 21, 0.72), rgba(27, 67, 50, 0.82)),
+                url("https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=1600&q=80") center/cover no-repeat fixed;
+            color: #f5f5f5;
+            min-height: 100vh;
+        }
+
+        .overlay {
+            min-height: 100vh;
+            padding: 40px 20px 60px;
+            backdrop-filter: blur(2px);
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        .top-nav {
+            margin-bottom: 25px;
+        }
+
+        .back-link {
+            color: #d8f3dc;
+            text-decoration: none;
+            font-size: 15px;
+        }
+
+        .hero-card,
+        .form-card,
+        .summary-card {
+            background: rgba(255, 255, 255, 0.12);
+            border: 1px solid rgba(255, 255, 255, 0.18);
+            border-radius: 20px;
+            box-shadow: 0 10px 28px rgba(0, 0, 0, 0.24);
+        }
+
+        .hero-card {
+            padding: 34px 28px;
+            margin-bottom: 24px;
+        }
+
+        .form-card,
+        .summary-card {
+            padding: 24px;
+        }
+
+        .badge {
+            display: inline-block;
+            margin-bottom: 14px;
+            padding: 6px 12px;
+            border-radius: 999px;
+            font-size: 13px;
+            background: rgba(116, 198, 157, 0.18);
+            border: 1px solid rgba(116, 198, 157, 0.45);
+            color: #d8f3dc;
+        }
+
+        h1 {
+            margin: 0 0 14px;
+            font-size: 40px;
+        }
+
+        .lead {
+            margin: 0;
+            font-size: 18px;
+            line-height: 1.7;
+            color: #edf7ef;
+            max-width: 760px;
+        }
+
+        .content-grid {
+            display: grid;
+            grid-template-columns: 1.1fr 0.9fr;
+            gap: 22px;
+        }
+
+        .section-title {
+            margin-top: 0;
+            margin-bottom: 18px;
+            font-size: 24px;
+        }
+
+        .summary-row {
+            padding: 12px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.14);
+        }
+
+        .summary-row:last-child {
+            border-bottom: none;
+        }
+
+        .label-small {
+            display: block;
+            font-size: 13px;
+            color: #cde9d4;
+            margin-bottom: 4px;
+            text-transform: uppercase;
+            letter-spacing: 0.7px;
+        }
+
+        .value {
+            font-size: 17px;
+            color: #ffffff;
+        }
+
+        .form-group {
+            margin-bottom: 18px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+            color: #eff8f1;
+        }
+
+        .form-input,
+        input[type="text"],
+        input[type="tel"],
+        select,
+        textarea {
+            width: 100%;
+            padding: 12px 14px;
+            border-radius: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.20);
+            background: rgba(255, 255, 255, 0.10);
+            color: #ffffff;
+            font-size: 15px;
+            outline: none;
+        }
+
+        input[type="text"]::placeholder,
+        input[type="tel"]::placeholder,
+        textarea::placeholder {
+            color: rgba(255, 255, 255, 0.72);
+        }
+
+        select {
+            color: #ffffff;
+        }
+
+        select option {
+            color: #111;
+        }
+
+        textarea {
+            min-height: 120px;
+            resize: vertical;
+        }
+
+        .errorlist {
+            margin: 8px 0 0;
+            padding-left: 18px;
+            color: #ffb4ab;
+        }
+
+        .help-text {
+            margin-top: 8px;
+            color: #dcefe0;
+            font-size: 14px;
+            line-height: 1.5;
+        }
+
+        .btn {
+            position: relative;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+            text-align: center;
+            text-decoration: none;
+            background: linear-gradient(135deg, #2d6a4f, #40916c);
+            color: white;
+            padding: 14px 18px;
+            border-radius: 12px;
+            font-weight: bold;
+            border: none;
+            cursor: pointer;
+            font-size: 16px;
+            overflow: hidden;
+            transition: opacity 0.2s ease, transform 0.2s ease;
+        }
+
+        .btn:hover {
+            opacity: 0.94;
+            transform: translateY(-1px);
+        }
+
+        .btn:disabled {
+            opacity: 0.95;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .btn-label {
+            position: relative;
+            z-index: 2;
+        }
+
+        .btn-progress {
+            position: absolute;
+            left: 0;
+            top: 0;
+            height: 100%;
+            width: 0%;
+            background: linear-gradient(90deg, rgba(116, 198, 157, 0.45), rgba(149, 213, 178, 0.75));
+            z-index: 1;
+            transition: width 0.05s linear;
+        }
+
+        .info-box {
+            margin-top: 18px;
+            padding: 14px 16px;
+            border-radius: 12px;
+            background: rgba(116, 198, 157, 0.10);
+            border: 1px solid rgba(116, 198, 157, 0.25);
+            color: #eaf7ed;
+            font-size: 14px;
+            line-height: 1.6;
+        }
+
+        @media (max-width: 850px) {
+            .content-grid {
+                grid-template-columns: 1fr;
+            }
+
+            h1 {
+                font-size: 32px;
+            }
+
+            .lead {
+                font-size: 16px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="overlay">
+        <div class="container">
+            <div class="top-nav">
+                <a class="back-link" href="{% url 'location_detail' location.id %}">← Назад към локацията</a>
+            </div>
+
+            <section class="hero-card">
+                <div class="badge">Форма за доставка</div>
+                <h1>Завърши поръчката си</h1>
+                <p class="lead">
+                    Локацията е валидирана успешно. Попълни данните за доставка, за да създадеш
+                    поръчката за своето горско приключение.
+                </p>
+            </section>
+
+            <div class="content-grid">
+                <section class="form-card">
+                    <h2 class="section-title">Данни за доставка</h2>
+
+                    <form method="post" id="order-form">
+                        {% csrf_token %}
+                        <input type="hidden" name="location_id" value="{{ location.id }}">
+                        <input type="hidden" name="distance" value="{{ distance }}">
+
+                        <div class="form-group">
+                            {{ form.customer_name.label_tag }}
+                            {{ form.customer_name }}
+                            {{ form.customer_name.errors }}
+                        </div>
+
+                        <div class="form-group">
+                            {{ form.phone.label_tag }}
+                            {{ form.phone }}
+                            {{ form.phone.errors }}
+                        </div>
+
+                        <div class="form-group">
+                            {{ form.delivery_type.label_tag }}
+                            {{ form.delivery_type }}
+                            {{ form.delivery_type.errors }}
+                        </div>
+
+                        <div class="form-group">
+                            {{ form.delivery_details.label_tag }}
+                            {{ form.delivery_details }}
+                            {{ form.delivery_details.errors }}
+                            <div id="delivery-help" class="help-text"></div>
+                        </div>
+
+                        <button type="submit" id="submit-btn" class="btn">
+                            <div id="btn-progress" class="btn-progress"></div>
+                            <span id="btn-label" class="btn-label">Създай поръчка</span>
+                        </button>
+                    </form>
+
+                    <div class="info-box">
+                        След натискане на бутона поръчката ще бъде обработена и ще видиш страница за успешно създаване.
+                    </div>
+                </section>
+
+                <aside class="summary-card">
+                    <h2 class="section-title">Резюме</h2>
+
+                    <div class="summary-row">
+                        <span class="label-small">Локация</span>
+                        <span class="value">{{ location.name }}</span>
+                    </div>
+
+                    <div class="summary-row">
+                        <span class="label-small">Статус</span>
+                        <span class="value">Готова за поръчка</span>
+                    </div>
+                </aside>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const orderForm = document.getElementById("order-form");
+        const submitBtn = document.getElementById("submit-btn");
+        const btnLabel = document.getElementById("btn-label");
+        const btnProgress = document.getElementById("btn-progress");
+        const deliveryType = document.getElementById("delivery-type");
+        const deliveryDetails = document.getElementById("delivery-details");
+        const deliveryHelp = document.getElementById("delivery-help");
+
+        let progressInterval = null;
+        let progressValue = 0;
+
+        function updateDeliveryUI() {
+            if (!deliveryType || !deliveryDetails || !deliveryHelp) {
+                return;
+            }
+
+            const selected = deliveryType.value;
+
+            if (selected === "econt") {
+                deliveryDetails.placeholder = "Например: Еконт офис Пловдив Център";
+                deliveryHelp.textContent = "Въведи точен офис на Еконт, до който искаш доставка.";
+            } else if (selected === "address") {
+                deliveryDetails.placeholder = "Например: гр. Пловдив, ул. ..., номер ..., вход ..., етаж ...";
+                deliveryHelp.textContent = "Въведи точен личен адрес за доставка.";
+            } else {
+                deliveryDetails.placeholder = "Въведи данни за доставка";
+                deliveryHelp.textContent = "";
+            }
+        }
+
+        function startButtonProgress() {
+            progressValue = 0;
+            btnProgress.style.width = "0%";
+
+            const totalDuration = 3000;
+            const stepTime = 50;
+            const totalSteps = totalDuration / stepTime;
+            const stepAmount = 100 / totalSteps;
+
+            progressInterval = setInterval(() => {
+                progressValue += stepAmount;
+
+                if (progressValue >= 100) {
+                    progressValue = 100;
+                    clearInterval(progressInterval);
+                }
+
+                btnProgress.style.width = `${progressValue}%`;
+            }, stepTime);
+        }
+
+        if (deliveryType) {
+            updateDeliveryUI();
+            deliveryType.addEventListener("change", updateDeliveryUI);
+        }
+
+        orderForm.addEventListener("submit", function () {
+            submitBtn.disabled = true;
+            btnLabel.textContent = "Създавам...";
+            startButtonProgress();
+
+            setTimeout(() => {
+                orderForm.submit();
+            }, 3000);
+
+            event.preventDefault(event);
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="bg">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Моите поръчки | Catch the Forest</title>
+    <style>
+        * { box-sizing: border-box; }
+
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background:
+                linear-gradient(rgba(8, 28, 21, 0.72), rgba(27, 67, 50, 0.82)),
+                url("https://upload.wikimedia.org/wikipedia/commons/6/67/Trevistolake.jpg") center/cover no-repeat fixed;
+            color: #f5f5f5;
+            min-height: 100vh;
+        }
+
+        .overlay {
+            min-height: 100vh;
+            padding: 30px 20px 60px;
+            backdrop-filter: blur(2px);
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        .top-links {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+            margin-bottom: 24px;
+        }
+
+        .top-links a {
+            color: #f5f5f5;
+            text-decoration: none;
+            background: rgba(255,255,255,0.10);
+            border: 1px solid rgba(255,255,255,0.18);
+            padding: 10px 14px;
+            border-radius: 10px;
+            font-size: 14px;
+        }
+
+        .page-card {
+            background: rgba(255,255,255,0.12);
+            border: 1px solid rgba(255,255,255,0.18);
+            border-radius: 20px;
+            padding: 26px;
+            box-shadow: 0 10px 28px rgba(0,0,0,0.24);
+        }
+
+        h1 {
+            margin-top: 0;
+            font-size: 36px;
+        }
+
+        .order-item {
+            padding: 18px 0;
+            border-bottom: 1px solid rgba(255,255,255,0.12);
+        }
+
+        .order-item:last-child {
+            border-bottom: none;
+        }
+
+        .order-title {
+            font-size: 22px;
+            font-weight: bold;
+            margin-bottom: 8px;
+        }
+
+        .order-meta {
+            color: #d8f3dc;
+            line-height: 1.7;
+        }
+
+        .empty {
+            color: #d8f3dc;
+        }
+    </style>
+</head>
+<body>
+<div class="overlay">
+    <div class="container">
+        <div class="top-links">
+            <a href="{% url 'location_list' %}">Начало</a>
+            <a href="{% url 'profile' %}">Моят профил</a>
+            <a href="{% url 'caught_places' %}">Хванати места</a>
+        </div>
+
+        <section class="page-card">
+            <h1>Моите поръчки</h1>
+
+            {% if orders %}
+                {% for order in orders %}
+                    <div class="order-item">
+                        <div class="order-title">{{ order.location.name }}</div>
+                        <div class="order-meta">
+                            Клиент: {{ order.customer_name }}<br>
+                            Телефон: {{ order.phone }}<br>
+                            Тип доставка: {{ order.get_delivery_type_display }}<br>
+                            Детайли: {{ order.delivery_details }}<br>
+                            Разстояние: {{ order.distance_m|floatformat:1 }} м<br>
+                            Статус: {{ order.status }}<br>
+                            Създадена на: {{ order.created_at|date:"d.m.Y H:i" }}
+                        </div>
+                    </div>
+                {% endfor %}
+            {% else %}
+                <p class="empty">Все още нямаш направени поръчки.</p>
+            {% endif %}
+        </section>
+    </div>
+</div>
+</body>
+</html>

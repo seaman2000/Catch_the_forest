@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="bg">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Вход | Catch the Forest</title>
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background:
+                linear-gradient(rgba(8, 28, 21, 0.75), rgba(27, 67, 50, 0.85)),
+                url("https://images.unsplash.com/photo-1441974231531-c6227db76b6e?auto=format&fit=crop&w=1600&q=80") center/cover no-repeat fixed;
+            color: white;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 24px;
+        }
+
+        .auth-card {
+            width: 100%;
+            max-width: 420px;
+            background: rgba(255, 255, 255, 0.12);
+            border: 1px solid rgba(255, 255, 255, 0.18);
+            border-radius: 20px;
+            padding: 30px;
+            backdrop-filter: blur(4px);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+        }
+
+        .title {
+            margin: 0 0 10px;
+            font-size: 32px;
+            text-align: center;
+        }
+
+        .subtitle {
+            margin: 0 0 22px;
+            text-align: center;
+            color: #d8f3dc;
+            line-height: 1.6;
+        }
+
+        .tabs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .tab {
+            flex: 1;
+            padding: 12px;
+            text-align: center;
+            cursor: pointer;
+            border-radius: 10px;
+            background: rgba(255, 255, 255, 0.10);
+            transition: 0.2s ease;
+        }
+
+        .tab.active {
+            background: linear-gradient(135deg, #2d6a4f, #40916c);
+        }
+
+        form {
+            display: none;
+        }
+
+        form.active {
+            display: block;
+        }
+
+        form p {
+            margin-bottom: 14px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 6px;
+            color: #edf7ef;
+            font-weight: bold;
+        }
+
+        input {
+            width: 100%;
+            padding: 12px 14px;
+            border-radius: 10px;
+            border: none;
+            outline: none;
+            font-size: 15px;
+        }
+
+        .helptext {
+            display: block;
+            margin-top: 6px;
+            font-size: 13px;
+            color: #d8f3dc;
+        }
+
+        .errorlist {
+            margin: 6px 0 0;
+            padding-left: 18px;
+            color: #ffb4ab;
+        }
+
+        button {
+            width: 100%;
+            padding: 12px;
+            border-radius: 10px;
+            border: none;
+            background: linear-gradient(135deg, #2d6a4f, #40916c);
+            color: white;
+            font-weight: bold;
+            cursor: pointer;
+            font-size: 15px;
+            margin-top: 8px;
+        }
+
+        button:hover {
+            opacity: 0.92;
+        }
+
+        .back-link {
+            display: block;
+            text-align: center;
+            margin-top: 18px;
+            color: #d8f3dc;
+            text-decoration: none;
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="auth-card">
+    <h1 class="title">🌲 Catch the Forest</h1>
+    <p class="subtitle">
+        Влез в профила си или си направи нов, за да пазиш своите приключения и поръчки.
+    </p>
+
+    <div class="tabs">
+        <div class="tab active" id="login-tab" onclick="showLogin()">Вход</div>
+        <div class="tab" id="register-tab" onclick="showRegister()">Регистрация</div>
+    </div>
+
+    <form method="post" id="login-form" class="active">
+        {% csrf_token %}
+        {{ login_form.as_p }}
+        <button type="submit" name="login_submit">Влез</button>
+    </form>
+
+    <form method="post" id="register-form">
+        {% csrf_token %}
+        {{ register_form.as_p }}
+        <button type="submit" name="register_submit">Регистрирай се</button>
+    </form>
+
+  <form method="post" action="{% url 'logout' %}" style="display:inline;">
+    {% csrf_token %}
+    <button type="submit" style="
+        background: none;
+        border: none;
+        color: #d8f3dc;
+        cursor: pointer;
+        font-size: 15px;
+        padding: 0;
+    ">
+        Изход
+    </button>
+  </form>
+
+    <a class="back-link" href="{% url 'location_list' %}">← Назад към началната страница</a>
+</div>
+
+<script>
+    const loginTab = document.getElementById("login-tab");
+    const registerTab = document.getElementById("register-tab");
+    const loginForm = document.getElementById("login-form");
+    const registerForm = document.getElementById("register-form");
+
+    function showLogin() {
+        loginTab.classList.add("active");
+        registerTab.classList.remove("active");
+        loginForm.classList.add("active");
+        registerForm.classList.remove("active");
+    }
+
+    function showRegister() {
+        registerTab.classList.add("active");
+        loginTab.classList.remove("active");
+        registerForm.classList.add("active");
+        loginForm.classList.remove("active");
+    }
+</script>
+
+</body>
+</html>

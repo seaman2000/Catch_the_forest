@@ -1,0 +1,457 @@
+<!DOCTYPE html>
+<html lang="bg">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Catch the Forest</title>
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background:
+                linear-gradient(rgba(8, 28, 21, 0.72), rgba(27, 67, 50, 0.82)),
+                url("https://images.unsplash.com/photo-1448375240586-882707db888b?auto=format&fit=crop&w=1600&q=80") center/cover no-repeat fixed;
+            color: #f5f5f5;
+            min-height: 100vh;
+        }
+
+        .page-wrapper {
+            position: relative;
+            min-height: 100vh;
+        }
+
+        .blurred-content {
+            min-height: 100vh;
+            transition: filter 0.3s ease;
+        }
+
+        .blurred {
+            filter: blur(8px);
+            pointer-events: none;
+            user-select: none;
+        }
+
+        .overlay {
+            min-height: 100vh;
+            padding: 0 20px 60px;
+            backdrop-filter: blur(2px);
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .navbar {
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
+            padding: 22px 0;
+        }
+
+
+        .brand {
+            font-size: 26px;
+            font-weight: bold;
+            color: #ffffff;
+            text-decoration: none;
+        }
+
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            flex-wrap: wrap;
+        }
+
+        .nav-links a,
+        .logout-btn {
+            color: #f5f5f5;
+            text-decoration: none;
+            background: rgba(255, 255, 255, 0.10);
+            border: 1px solid rgba(255, 255, 255, 0.18);
+            padding: 10px 14px;
+            border-radius: 10px;
+            font-size: 14px;
+            cursor: pointer;
+        }
+
+        .logout-btn {
+            font-family: inherit;
+        }
+
+        .hero {
+            text-align: center;
+            padding: 40px 20px 35px;
+        }
+
+        .hero h1 {
+            margin: 0 0 12px;
+            font-size: 52px;
+            letter-spacing: 1px;
+        }
+
+        .hero p {
+            max-width: 720px;
+            margin: 0 auto;
+            font-size: 18px;
+            line-height: 1.7;
+            color: #e9f5ec;
+        }
+
+        .stats-box {
+            margin: 30px auto 10px;
+            display: inline-block;
+            padding: 12px 20px;
+            background: rgba(255, 255, 255, 0.12);
+            border: 1px solid rgba(255, 255, 255, 0.18);
+            border-radius: 999px;
+            font-size: 15px;
+        }
+
+        .section-title {
+            margin: 30px 0 20px;
+            font-size: 28px;
+            text-align: center;
+        }
+
+        .locations-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 22px;
+        }
+
+        .location-card {
+            background: rgba(255, 255, 255, 0.12);
+            border: 1px solid rgba(255, 255, 255, 0.18);
+            border-radius: 18px;
+            padding: 22px;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.22);
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .location-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 14px 30px rgba(0, 0, 0, 0.28);
+        }
+
+        .location-card h3 {
+            margin-top: 0;
+            margin-bottom: 12px;
+            font-size: 22px;
+            color: #ffffff;
+        }
+
+        .location-card p {
+            margin: 0 0 18px;
+            color: #ecf8ef;
+            line-height: 1.6;
+            min-height: 72px;
+        }
+
+        .badge {
+            display: inline-block;
+            margin-bottom: 14px;
+            padding: 6px 12px;
+            border-radius: 999px;
+            font-size: 13px;
+            background: rgba(116, 198, 157, 0.18);
+            border: 1px solid rgba(116, 198, 157, 0.45);
+            color: #d8f3dc;
+        }
+
+        .btn {
+            display: inline-block;
+            text-decoration: none;
+            background: linear-gradient(135deg, #2d6a4f, #40916c);
+            color: white;
+            padding: 11px 18px;
+            border-radius: 10px;
+            font-weight: bold;
+            transition: opacity 0.2s ease, transform 0.2s ease;
+        }
+
+        .btn:hover {
+            opacity: 0.94;
+            transform: translateY(-1px);
+        }
+
+        .empty-box {
+            max-width: 600px;
+            margin: 40px auto 0;
+            text-align: center;
+            padding: 30px;
+            border-radius: 18px;
+            background: rgba(255, 255, 255, 0.12);
+            border: 1px solid rgba(255, 255, 255, 0.18);
+        }
+
+        .footer-text {
+            text-align: center;
+            margin-top: 40px;
+            color: #d8f3dc;
+            font-size: 14px;
+        }
+
+        .auth-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(8, 28, 21, 0.38);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            z-index: 20;
+        }
+
+        .auth-card {
+            width: 100%;
+            max-width: 430px;
+            background: rgba(20, 48, 36, 0.94);
+            border: 1px solid rgba(255, 255, 255, 0.16);
+            border-radius: 22px;
+            padding: 28px;
+            box-shadow: 0 14px 36px rgba(0, 0, 0, 0.35);
+        }
+
+        .auth-title {
+            margin: 0 0 10px;
+            text-align: center;
+            font-size: 30px;
+        }
+
+        .auth-subtitle {
+            margin: 0 0 22px;
+            text-align: center;
+            color: #d8f3dc;
+            line-height: 1.6;
+        }
+
+        .auth-form {
+            display: none;
+        }
+
+        .auth-form.active {
+            display: block;
+        }
+
+        .auth-form p {
+            margin-bottom: 14px;
+        }
+
+        .auth-form label {
+            display: block;
+            margin-bottom: 6px;
+            color: #edf7ef;
+            font-weight: bold;
+        }
+
+        .auth-form input {
+            width: 100%;
+            padding: 12px 14px;
+            border-radius: 10px;
+            border: none;
+            outline: none;
+            font-size: 15px;
+        }
+
+        .auth-form button {
+            width: 100%;
+            padding: 12px;
+            border-radius: 10px;
+            border: none;
+            background: linear-gradient(135deg, #2d6a4f, #40916c);
+            color: white;
+            font-weight: bold;
+            cursor: pointer;
+            font-size: 15px;
+            margin-top: 8px;
+        }
+
+        .errorlist {
+            margin: 6px 0 0;
+            padding-left: 18px;
+            color: #ffb4ab;
+        }
+
+        .helptext {
+            display: block;
+            margin-top: 6px;
+            font-size: 13px;
+            color: #d8f3dc;
+        }
+
+        .auth-switch {
+            margin-top: 14px;
+            text-align: center;
+            font-size: 14px;
+            color: #d8f3dc;
+            line-height: 1.6;
+        }
+
+        .auth-switch span {
+            text-decoration: underline;
+            cursor: pointer;
+            color: #95d5b2;
+            margin-left: 4px;
+        }
+
+        .auth-switch span:hover {
+            color: #b7e4c7;
+        }
+
+        @media (max-width: 700px) {
+            .hero h1 {
+                font-size: 38px;
+            }
+
+            .hero p {
+                font-size: 16px;
+            }
+
+            .section-title {
+                font-size: 24px;
+            }
+
+            .navbar {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .nav-links {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="page-wrapper">
+
+        <div class="blurred-content {% if not user.is_authenticated %}blurred{% endif %}">
+            <div class="overlay">
+                <div class="container">
+
+                    {% if user.is_authenticated %}
+                        <nav class="navbar">
+                            <div class="nav-links">
+                                <a href="{% url 'profile' %}">Моят профил</a>
+                                <a href="{% url 'my_orders' %}">Моите поръчки</a>
+                                <a href="{% url 'caught_places' %}">Моите значки</a>
+
+                                <form method="post" action="{% url 'logout' %}" style="display:inline;">
+                                    {% csrf_token %}
+                                    <button type="submit" class="logout-btn">Изход</button>
+                                </form>
+                            </div>
+                        </nav>
+                    {% endif %}
+
+                    <section class="hero">
+                        <h1>🌲 Catch the Forest</h1>
+                        <p>
+                            Откривай красиви места, стигни до тях в реалния свят и докажи,
+                            че си там. Всяка локация е малко приключение, а всяко успешно
+                            "хващане" те приближава до следващата следа.
+                        </p>
+
+                        <div class="stats-box">
+                            Налични приключения: <strong>{{ locations|length }}</strong>
+                        </div>
+                    </section>
+
+                    <h2 class="section-title">Къде се намираш? Вкъщи или някъде тук?</h2>
+
+                    {% if locations %}
+                        <div class="locations-grid">
+                            {% for location in locations %}
+                                <div class="location-card">
+                                    <div class="badge">Локация #{{ location.id }}</div>
+                                    <h3>{{ location.name }}</h3>
+
+                                    <p>
+                                        {% if location.description %}
+                                            {{ location.description|truncatechars:120 }}
+                                        {% else %}
+                                            Това място те чака да го откриеш, посетиш и валидираш на живо.
+                                        {% endif %}
+                                    </p>
+
+                                    <a class="btn" href="{% url 'location_detail' location.id %}">
+                                        Разгледай локацията
+                                    </a>
+                                </div>
+                            {% endfor %}
+                        </div>
+                    {% else %}
+                        <div class="empty-box">
+                            <h3>Все още няма добавени локации</h3>
+                            <p>Добави места през Django admin и тук ще започнат да се появяват.</p>
+                        </div>
+                    {% endif %}
+
+                    <p class="footer-text">
+                        Travel. Explore. Catch the Forest.
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        {% if not user.is_authenticated %}
+            <div class="auth-overlay">
+                <div class="auth-card">
+                    <h2 class="auth-title">Влез в приключението</h2>
+
+                    <p class="auth-subtitle">
+                        За да отключиш локациите и да пазиш своя прогрес, влез в профила си или си направи нов.
+                    </p>
+
+                    <form method="post" action="{% url 'auth' %}" id="login-form" class="auth-form active">
+                        {% csrf_token %}
+                        {{ login_form.as_p }}
+                        <button type="submit" name="login_submit">Вход</button>
+
+                        <p class="auth-switch">
+                            Нямаш акаунт?
+                            <span onclick="showRegister()">Регистрирай се</span>
+                        </p>
+                    </form>
+
+                    <form method="post" action="{% url 'auth' %}" id="register-form" class="auth-form">
+                        {% csrf_token %}
+                        {{ register_form.as_p }}
+                        <button type="submit" name="register_submit">Регистрация</button>
+
+                        <p class="auth-switch">
+                            Имаш акаунт?
+                            <span onclick="showLogin()">Вход</span>
+                        </p>
+                    </form>
+                </div>
+            </div>
+        {% endif %}
+    </div>
+
+    <script>
+        const loginForm = document.getElementById("login-form");
+        const registerForm = document.getElementById("register-form");
+
+        function showLogin() {
+            if (!loginForm || !registerForm) return;
+
+            loginForm.classList.add("active");
+            registerForm.classList.remove("active");
+        }
+
+        function showRegister() {
+            if (!loginForm || !registerForm) return;
+
+            registerForm.classList.add("active");
+            loginForm.classList.remove("active");
+        }
+    </script>
+</body>
+</html>

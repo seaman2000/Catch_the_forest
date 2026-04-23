@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="bg">
+<head>
+    <meta charset="UTF-8">
+    <title>Вход | Catch the Forest</title>
+</head>
+<body>
+
+    <h1>Вход</h1>
+
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+
+        <button type="submit">Влез</button>
+    </form>
+
+    <p>
+        Нямаш акаунт?
+        <a href="/register/">Регистрирай се</a>
+    </p>
+
+</body>
+</html>

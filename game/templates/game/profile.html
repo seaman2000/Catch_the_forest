@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="bg">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Моят профил | Catch the Forest</title>
+    <style>
+        * { box-sizing: border-box; }
+
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background:
+                linear-gradient(rgba(8, 28, 21, 0.72), rgba(27, 67, 50, 0.82)),
+                url("https://images.unsplash.com/photo-1448375240586-882707db888b?auto=format&fit=crop&w=1600&q=80") center/cover no-repeat fixed;
+            color: #f5f5f5;
+            min-height: 100vh;
+        }
+
+        .overlay {
+            min-height: 100vh;
+            padding: 30px 20px 60px;
+            backdrop-filter: blur(2px);
+        }
+
+        .container {
+            max-width: 1100px;
+            margin: 0 auto;
+        }
+
+        .topbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 24px;
+            gap: 16px;
+            flex-wrap: wrap;
+        }
+
+        .top-links {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+
+        .top-links a, .logout-btn {
+            color: #f5f5f5;
+            text-decoration: none;
+            background: rgba(255,255,255,0.10);
+            border: 1px solid rgba(255,255,255,0.18);
+            padding: 10px 14px;
+            border-radius: 10px;
+            font-size: 14px;
+        }
+
+        .logout-btn {
+            cursor: pointer;
+            font-family: inherit;
+        }
+
+        .hero-card, .section-card {
+            background: rgba(255,255,255,0.12);
+            border: 1px solid rgba(255,255,255,0.18);
+            border-radius: 20px;
+            box-shadow: 0 10px 28px rgba(0,0,0,0.24);
+        }
+
+        .hero-card {
+            padding: 30px;
+            margin-bottom: 24px;
+        }
+
+        .hero-card h1 {
+            margin: 0 0 12px;
+            font-size: 40px;
+        }
+
+        .hero-card p {
+            margin: 0;
+            color: #e9f5ec;
+            line-height: 1.7;
+            font-size: 18px;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 18px;
+            margin: 24px 0;
+        }
+
+        .stat-card {
+            background: rgba(255,255,255,0.10);
+            border: 1px solid rgba(255,255,255,0.14);
+            border-radius: 16px;
+            padding: 20px;
+        }
+
+        .stat-label {
+            font-size: 14px;
+            color: #d8f3dc;
+            margin-bottom: 8px;
+        }
+
+        .stat-value {
+            font-size: 34px;
+            font-weight: bold;
+        }
+
+        .content-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 22px;
+        }
+
+        .section-card {
+            padding: 24px;
+        }
+
+        .section-card h2 {
+            margin-top: 0;
+            margin-bottom: 18px;
+            font-size: 24px;
+        }
+
+        .item {
+            padding: 14px 0;
+            border-bottom: 1px solid rgba(255,255,255,0.12);
+        }
+
+        .item:last-child {
+            border-bottom: none;
+        }
+
+        .item-title {
+            font-weight: bold;
+            font-size: 18px;
+            margin-bottom: 4px;
+        }
+
+        .item-meta {
+            color: #d8f3dc;
+            font-size: 14px;
+            line-height: 1.6;
+        }
+
+        .empty {
+            color: #d8f3dc;
+        }
+
+        @media (max-width: 850px) {
+            .content-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .hero-card h1 {
+                font-size: 32px;
+            }
+
+            .hero-card p {
+                font-size: 16px;
+            }
+        }
+    </style>
+</head>
+<body>
+<div class="overlay">
+    <div class="container">
+        <div class="topbar">
+            <div class="top-links">
+                <a href="{% url 'location_list' %}">Начало</a>
+                <a href="{% url 'my_orders' %}">Моите поръчки</a>
+                <a href="{% url 'caught_places' %}">Хванати места</a>
+            </div>
+
+            <form method="post" action="{% url 'logout' %}">
+                {% csrf_token %}
+                <button type="submit" class="logout-btn">Изход</button>
+            </form>
+        </div>
+
+        <section class="hero-card">
+            <h1>Моят профил</h1>
+            <p>
+                Здравей, <strong>{{ user.username }}</strong>. Тук можеш да следиш своя прогрес,
+                последните си хванати локации и поръчките си.
+            </p>
+
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-label">Хванати места</div>
+                    <div class="stat-value">{{ catches_count }}</div>
+                </div>
+
+                <div class="stat-card">
+                    <div class="stat-label">Поръчки</div>
+                    <div class="stat-value">{{ orders_count }}</div>
+                </div>
+            </div>
+        </section>
+
+        <div class="content-grid">
+            <section class="section-card">
+                <h2>Последни хванати места</h2>
+
+                {% if latest_catches %}
+                    {% for catch in latest_catches %}
+                        <div class="item">
+                            <div class="item-title">{{ catch.location.name }}</div>
+                            <div class="item-meta">
+                                Разстояние: {{ catch.distance_m|floatformat:1 }} м<br>
+                                Дата: {{ catch.created_at|date:"d.m.Y H:i" }}
+                            </div>
+                        </div>
+                    {% endfor %}
+                {% else %}
+                    <p class="empty">Все още нямаш хванати места.</p>
+                {% endif %}
+            </section>
+
+            <section class="section-card">
+                <h2>Последни поръчки</h2>
+
+                {% if latest_orders %}
+                    {% for order in latest_orders %}
+                        <div class="item">
+                            <div class="item-title">{{ order.location.name }}</div>
+                            <div class="item-meta">
+                                Тип доставка: {{ order.get_delivery_type_display }}<br>
+                                Статус: {{ order.status }}<br>
+                                Дата: {{ order.created_at|date:"d.m.Y H:i" }}
+                            </div>
+                        </div>
+                    {% endfor %}
+                {% else %}
+                    <p class="empty">Все още нямаш поръчки.</p>
+                {% endif %}
+            </section>
+        </div>
+    </div>
+</div>
+</body>
+</html>

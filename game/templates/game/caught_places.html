@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="bg">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Моите значки | Catch the Forest</title>
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background:
+                linear-gradient(rgba(8, 28, 21, 0.75), rgba(27, 67, 50, 0.85)),
+                url("https://images.unsplash.com/photo-1448375240586-882707db888b?auto=format&fit=crop&w=1600&q=80")
+                center/cover no-repeat fixed;
+            color: #f5f5f5;
+            min-height: 100vh;
+        }
+
+        .overlay {
+            min-height: 100vh;
+            padding: 30px 20px 60px;
+            backdrop-filter: blur(2px);
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .top-links {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+            margin-bottom: 24px;
+        }
+
+        .top-links a {
+            color: #f5f5f5;
+            text-decoration: none;
+            background: rgba(255,255,255,0.10);
+            border: 1px solid rgba(255,255,255,0.18);
+            padding: 10px 14px;
+            border-radius: 10px;
+            font-size: 14px;
+        }
+
+        .page-card {
+            background: rgba(255,255,255,0.12);
+            border: 1px solid rgba(255,255,255,0.18);
+            border-radius: 28px;
+            padding: 30px;
+            box-shadow: 0 10px 28px rgba(0,0,0,0.24);
+        }
+
+        .page-title {
+            margin: 0 0 10px;
+            font-size: 56px;
+            font-weight: bold;
+        }
+
+        .page-subtitle {
+            margin: 0 0 24px;
+            color: #d8f3dc;
+            font-size: 20px;
+            line-height: 1.6;
+        }
+
+        .stats-row {
+            display: flex;
+            gap: 14px;
+            flex-wrap: wrap;
+            margin-bottom: 22px;
+        }
+
+        .stats-pill {
+            background: rgba(116, 198, 157, 0.12);
+            border: 1px solid rgba(116, 198, 157, 0.25);
+            border-radius: 12px;
+            padding: 14px 18px;
+            color: #eaf7ed;
+            font-size: 16px;
+        }
+
+        .badge-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 24px;
+        }
+
+        .badge-card {
+            background: rgba(255,255,255,0.08);
+            border: 1px solid rgba(255,255,255,0.14);
+            border-radius: 22px;
+            padding: 28px 20px;
+            text-align: center;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+            min-height: 520px;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+        }
+
+        .badge-card.unlocked {
+            box-shadow: 0 0 18px rgba(116, 198, 157, 0.20);
+        }
+
+        .badge-card.unlocked:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 0 24px rgba(116, 198, 157, 0.28);
+        }
+
+        .badge-image-wrap {
+            width: 220px;
+            height: 220px;
+            margin: 0 auto 22px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+        }
+
+        .badge-image {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            display: block;
+        }
+
+        .badge-card.locked .badge-image {
+            filter: grayscale(100%) brightness(0.65);
+        }
+
+        .lock-overlay {
+            position: absolute;
+            bottom: -6px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 40px;
+            line-height: 1;
+        }
+
+        .badge-name {
+            font-size: 22px;
+            font-weight: bold;
+            margin-bottom: 10px;
+            color: #ffffff;
+        }
+
+        .badge-description {
+            color: #d8f3dc;
+            font-size: 15px;
+            line-height: 1.6;
+            min-height: 52px;
+            margin-bottom: 14px;
+        }
+
+        .badge-status {
+            margin-top: auto;
+            font-size: 15px;
+            font-weight: bold;
+            padding-top: 10px;
+        }
+
+        .unlocked-text {
+            color: #95d5b2;
+        }
+
+        .locked-text {
+            color: #cfcfcf;
+        }
+
+        .empty {
+            color: #d8f3dc;
+        }
+
+        .no-image-box {
+            width: 100%;
+            height: 100%;
+            border-radius: 18px;
+            border: 1px dashed rgba(255,255,255,0.25);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #d8f3dc;
+            font-size: 14px;
+            padding: 20px;
+            text-align: center;
+        }
+
+        @media (max-width: 700px) {
+            .page-title {
+                font-size: 40px;
+            }
+
+            .page-subtitle {
+                font-size: 17px;
+            }
+
+            .badge-image-wrap {
+                width: 180px;
+                height: 180px;
+            }
+
+            .badge-card {
+                min-height: 470px;
+            }
+        }
+    </style>
+</head>
+<body>
+<div class="overlay">
+    <div class="container">
+        <div class="top-links">
+            <a href="{% url 'location_list' %}">Начало</a>
+            <a href="{% url 'profile' %}">Моят профил</a>
+            <a href="{% url 'my_orders' %}">Моите поръчки</a>
+        </div>
+
+        <section class="page-card">
+            <h1 class="page-title">Значки</h1>
+            <p class="page-subtitle">
+                Отключавай уникални значки, като хващаш нови места.
+            </p>
+
+            <div class="stats-row">
+                <div class="stats-pill">✅ Отключени: <strong>{{ unlocked_count }}</strong></div>
+                <div class="stats-pill">🏅 Всички значки: <strong>{{ badges|length }}</strong></div>
+            </div>
+
+            {% if badges %}
+                <div class="badge-grid">
+                    {% for badge in badges %}
+                        {% if badge.id in unlocked_badge_ids %}
+                            <div class="badge-card unlocked">
+                                <div class="badge-image-wrap">
+                                    {% if badge.image %}
+                                        <img src="{{ badge.image.url }}" alt="{{ badge.name }}" class="badge-image">
+                                    {% else %}
+                                        <div class="no-image-box">Няма качено изображение</div>
+                                    {% endif %}
+                                </div>
+
+                                <div class="badge-name">{{ badge.name }}</div>
+
+                                {% if badge.description %}
+                                    <div class="badge-description">{{ badge.description }}</div>
+                                {% else %}
+                                    <div class="badge-description">Отключена значка.</div>
+                                {% endif %}
+
+                                <div class="badge-status unlocked-text">Отключена</div>
+                            </div>
+                        {% else %}
+                            <div class="badge-card locked">
+                                <div class="badge-image-wrap">
+                                    {% if badge.image %}
+                                        <img src="{{ badge.image.url }}" alt="{{ badge.name }}" class="badge-image">
+                                    {% else %}
+                                        <div class="no-image-box">Няма качено изображение</div>
+                                    {% endif %}
+                                    <div class="lock-overlay">🔒</div>
+                                </div>
+
+                                <div class="badge-name">{{ badge.name }}</div>
+
+                                {% if badge.description %}
+                                    <div class="badge-description">{{ badge.description }}</div>
+                                {% else %}
+                                    <div class="badge-description">Все още не е отключена.</div>
+                                {% endif %}
+
+                                <div class="badge-status locked-text">Неотключена</div>
+                            </div>
+                        {% endif %}
+                    {% endfor %}
+                </div>
+            {% else %}
+                <p class="empty">Все още няма добавени значки.</p>
+            {% endif %}
+        </section>
+    </div>
+</div>
+</body>
+</html>
