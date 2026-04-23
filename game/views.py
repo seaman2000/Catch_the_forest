@@ -11,6 +11,15 @@ from .forms import OrderForm, RegisterForm
 from .models import Location, Catch, Badge
 from .services.gps import is_within_radius
 
+from django.http import HttpResponse
+from django.contrib.auth.models import User
+
+def create_admin(request):
+    if not User.objects.filter(username="admin").exists():
+        User.objects.create_superuser("admin", "admin@test.com", "admin123")
+        return HttpResponse("Admin created")
+    return HttpResponse("Admin already exists")
+
 @require_GET
 def location_list(request):
     locations = Location.objects.all().order_by("id")
