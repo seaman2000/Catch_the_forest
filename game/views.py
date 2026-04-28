@@ -219,11 +219,11 @@ def caught_places_view(request):
     badges = Badge.objects.all().prefetch_related("locations")
     catches = request.user.catches.select_related("location", "location__badge")
 
-    unlocked_badge_ids = set()
+    unlocked_badge_ids = []
 
     for catch in catches:
         if catch.location.badge:
-            unlocked_badge_ids.add(catch.location.badge.id)
+            unlocked_badge_ids.append(catch.location.badge.id)
 
     return render(
         request,
@@ -231,6 +231,6 @@ def caught_places_view(request):
         {
             "badges": badges,
             "unlocked_badge_ids": unlocked_badge_ids,
-            "unlocked_count": len(unlocked_badge_ids),
+            "unlocked_count": len(set(unlocked_badge_ids)),
         },
     )
