@@ -21,6 +21,19 @@ This project simulates a small exploration game where users:
 
 ---
 
+## Screenshots
+
+### Home Page
+![Home](screenshots/home.png)
+
+### My Profile
+![Login](screenshots/my_profile.png)
+
+### Badges
+![Badges](screenshots/badges.png)
+
+---
+
 ## ⚙️ Tech Stack
 
 - Python
