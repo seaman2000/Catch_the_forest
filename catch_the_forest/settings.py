@@ -18,7 +18,7 @@ SECRET_KEY = os.environ.get(
     "dev-secret-key-change-this"
 )
 
-DEBUG = os.environ.get("DEBUG", "False") == "True"
+DEBUG = True
 
 ALLOWED_HOSTS = os.environ.get(
     "ALLOWED_HOSTS",
@@ -138,6 +138,9 @@ STATIC_ROOT = BASE_DIR / "staticfiles"
 
 # whitenoise storage
 STORAGES = {
+    "default": {
+        "BACKEND": "django.core.files.storage.FileSystemStorage",
+    },
     "staticfiles": {
         "BACKEND": "whitenoise.storage.CompressedManifestStaticFilesStorage",
     },
