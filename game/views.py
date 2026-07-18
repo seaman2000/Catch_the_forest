@@ -14,6 +14,9 @@ from .services.gps import is_within_radius
 from django.http import HttpResponse
 from django.contrib.auth.models import User
 
+from services.econt_api import (EcontAPIError, get_cities, get_offices)
+
+
 def create_admin(request):
     if not User.objects.filter(username="admin").exists():
         User.objects.create_superuser("admin", "admin@test.com", "admin123")
@@ -234,3 +237,86 @@ def caught_places_view(request):
             "unlocked_count": len(set(unlocked_badge_ids)),
         },
     )
+
+
+@require_GET
+def econt_cities(request):
+    try:
+        cities = get_cities()
+    except EcontAPIError as error:
+        return JsonResponse(
+            {"error": str(error)},
+            status=502,
+        )
+
+    result = []
+
+    for city in cities:
+        result.append(
+            {
+                "id": city.get("id"),
+                "name": city.get("name"),
+                "post_code": city.get("postCode"),
+                "region": city.get("regionName"),
+            }
+        )
+
+    result.sort(
+        key=lambda city: (city["name"] or "").lower()
+    )
+
+    return JsonResponse({"cities": result})
+
+
+@require_GET
+def econt_offices(request):
+    city_id_raw = request.GET.get("city_id")
+
+    if not city_id_raw:
+        return JsonResponse(
+            {"error": "Липсва city_id."},
+            status=400,
+        )
+
+    try:
+        city_id = int(city_id_raw)
+    except ValueError:
+        return JsonResponse(
+            {"error": "city_id трябва да бъде число."},
+            status=400,
+        )
+
+    try:
+        offices = get_offices(city_id)
+    except EcontAPIError as error:
+        return JsonResponse(
+            {"error": str(error)},
+            status=502,
+        )
+
+    result = []
+
+    for office in offices:
+        address = office.get("address") or {}
+
+        result.append(
+            {
+                "id": office.get("id"),
+                "code": office.get("code"),
+                "name": office.get("name"),
+                "address": address.get("fullAddress"),
+                "is_aps": office.get("isAPS", False),
+                "latitude": (
+                    address.get("location") or {}
+                ).get("latitude"),
+                "longitude": (
+                    address.get("location") or {}
+                ).get("longitude"),
+            }
+        )
+
+    result.sort(
+        key=lambda office: (office["name"] or "").lower()
+    )
+
+    return JsonResponse({"offices": result})
