@@ -3,7 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
     <title>Поръчка | Catch the Forest</title>
+
     <style>
         * {
             box-sizing: border-box;
@@ -11,12 +13,18 @@
 
         body {
             margin: 0;
-            font-family: Arial, sans-serif;
-            background:
-                linear-gradient(rgba(8, 28, 21, 0.72), rgba(27, 67, 50, 0.82)),
-                url("https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=1600&q=80") center/cover no-repeat fixed;
-            color: #f5f5f5;
             min-height: 100vh;
+            font-family: Arial, sans-serif;
+            color: #f5f5f5;
+
+            background:
+                linear-gradient(
+                    rgba(8, 28, 21, 0.72),
+                    rgba(27, 67, 50, 0.82)
+                ),
+                url(
+                    "https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=1600&q=80"
+                ) center / cover no-repeat fixed;
         }
 
         .overlay {
@@ -26,6 +34,7 @@
         }
 
         .container {
+            width: 100%;
             max-width: 1000px;
             margin: 0 auto;
         }
@@ -38,6 +47,10 @@
             color: #d8f3dc;
             text-decoration: none;
             font-size: 15px;
+        }
+
+        .back-link:hover {
+            text-decoration: underline;
         }
 
         .hero-card,
@@ -63,11 +76,14 @@
             display: inline-block;
             margin-bottom: 14px;
             padding: 6px 12px;
+
             border-radius: 999px;
-            font-size: 13px;
-            background: rgba(116, 198, 157, 0.18);
             border: 1px solid rgba(116, 198, 157, 0.45);
+
+            background: rgba(116, 198, 157, 0.18);
             color: #d8f3dc;
+
+            font-size: 13px;
         }
 
         h1 {
@@ -76,11 +92,12 @@
         }
 
         .lead {
+            max-width: 760px;
             margin: 0;
+
+            color: #edf7ef;
             font-size: 18px;
             line-height: 1.7;
-            color: #edf7ef;
-            max-width: 760px;
         }
 
         .content-grid {
@@ -106,16 +123,17 @@
 
         .label-small {
             display: block;
-            font-size: 13px;
-            color: #cde9d4;
             margin-bottom: 4px;
+
+            color: #cde9d4;
+            font-size: 13px;
             text-transform: uppercase;
             letter-spacing: 0.7px;
         }
 
         .value {
-            font-size: 17px;
             color: #ffffff;
+            font-size: 17px;
         }
 
         .form-group {
@@ -125,8 +143,9 @@
         .form-group label {
             display: block;
             margin-bottom: 8px;
-            font-weight: bold;
+
             color: #eff8f1;
+            font-weight: bold;
         }
 
         .form-input,
@@ -136,12 +155,27 @@
         textarea {
             width: 100%;
             padding: 12px 14px;
-            border-radius: 12px;
+
             border: 1px solid rgba(255, 255, 255, 0.20);
+            border-radius: 12px;
+
             background: rgba(255, 255, 255, 0.10);
             color: #ffffff;
+
             font-size: 15px;
             outline: none;
+
+            transition:
+                border-color 0.2s ease,
+                background 0.2s ease;
+        }
+
+        input[type="text"]:focus,
+        input[type="tel"]:focus,
+        select:focus,
+        textarea:focus {
+            border-color: rgba(116, 198, 157, 0.85);
+            background: rgba(255, 255, 255, 0.15);
         }
 
         input[type="text"]::placeholder,
@@ -152,10 +186,17 @@
 
         select {
             color: #ffffff;
+            cursor: pointer;
+        }
+
+        select:disabled {
+            cursor: not-allowed;
+            opacity: 0.65;
         }
 
         select option {
-            color: #111;
+            color: #111111;
+            background: #ffffff;
         }
 
         textarea {
@@ -169,6 +210,25 @@
             color: #ffb4ab;
         }
 
+        .custom-error {
+            display: block;
+            margin: 8px 0 18px;
+            padding: 12px 14px;
+
+            border: 1px solid rgba(255, 180, 171, 0.45);
+            border-radius: 10px;
+
+            background: rgba(130, 20, 20, 0.20);
+            color: #ffd3ce;
+
+            font-size: 14px;
+            line-height: 1.5;
+        }
+
+        .custom-error[hidden] {
+            display: none;
+        }
+
         .help-text {
             margin-top: 8px;
             color: #dcefe0;
@@ -176,24 +236,37 @@
             line-height: 1.5;
         }
 
+        .loading-text {
+            color: #d8f3dc;
+        }
+
         .btn {
             position: relative;
+
             display: inline-flex;
             align-items: center;
             justify-content: center;
+
             width: 100%;
+            padding: 14px 18px;
+
+            border: none;
+            border-radius: 12px;
+
+            background: linear-gradient(135deg, #2d6a4f, #40916c);
+            color: #ffffff;
+
+            font-size: 16px;
+            font-weight: bold;
             text-align: center;
             text-decoration: none;
-            background: linear-gradient(135deg, #2d6a4f, #40916c);
-            color: white;
-            padding: 14px 18px;
-            border-radius: 12px;
-            font-weight: bold;
-            border: none;
+
             cursor: pointer;
-            font-size: 16px;
             overflow: hidden;
-            transition: opacity 0.2s ease, transform 0.2s ease;
+
+            transition:
+                opacity 0.2s ease,
+                transform 0.2s ease;
         }
 
         .btn:hover {
@@ -214,24 +287,38 @@
 
         .btn-progress {
             position: absolute;
-            left: 0;
             top: 0;
-            height: 100%;
-            width: 0%;
-            background: linear-gradient(90deg, rgba(116, 198, 157, 0.45), rgba(149, 213, 178, 0.75));
+            left: 0;
             z-index: 1;
+
+            width: 0;
+            height: 100%;
+
+            background: linear-gradient(
+                90deg,
+                rgba(116, 198, 157, 0.45),
+                rgba(149, 213, 178, 0.75)
+            );
+
             transition: width 0.05s linear;
         }
 
         .info-box {
             margin-top: 18px;
             padding: 14px 16px;
-            border-radius: 12px;
-            background: rgba(116, 198, 157, 0.10);
+
             border: 1px solid rgba(116, 198, 157, 0.25);
+            border-radius: 12px;
+
+            background: rgba(116, 198, 157, 0.10);
             color: #eaf7ed;
+
             font-size: 14px;
             line-height: 1.6;
+        }
+
+        .hidden-section {
+            display: none;
         }
 
         @media (max-width: 850px) {
@@ -249,30 +336,51 @@
         }
     </style>
 </head>
+
 <body>
     <div class="overlay">
         <div class="container">
+
             <div class="top-nav">
-                <a class="back-link" href="{% url 'location_detail' location.id %}">← Назад към локацията</a>
+                <a
+                    class="back-link"
+                    href="{% url 'location_detail' location.id %}"
+                >
+                    ← Назад към локацията
+                </a>
             </div>
 
             <section class="hero-card">
                 <div class="badge">Форма за доставка</div>
+
                 <h1>Завърши поръчката си</h1>
+
                 <p class="lead">
-                    Локацията е валидирана успешно. Попълни данните за доставка, за да създадеш
-                    поръчката за своето горско приключение.
+                    Локацията е валидирана успешно. Попълни данните за
+                    доставка, за да създадеш поръчката за своето горско
+                    приключение.
                 </p>
             </section>
 
             <div class="content-grid">
+
                 <section class="form-card">
                     <h2 class="section-title">Данни за доставка</h2>
 
                     <form method="post" id="order-form">
                         {% csrf_token %}
-                        <input type="hidden" name="location_id" value="{{ location.id }}">
-                        <input type="hidden" name="distance" value="{{ distance }}">
+
+                        <input
+                            type="hidden"
+                            name="location_id"
+                            value="{{ location.id }}"
+                        >
+
+                        <input
+                            type="hidden"
+                            name="distance"
+                            value="{{ distance }}"
+                        >
 
                         <div class="form-group">
                             {{ form.customer_name.label_tag }}
@@ -286,12 +394,125 @@
                             {{ form.phone.errors }}
                         </div>
 
+                        <div class="form-group">
+                            {{ form.delivery_type.label_tag }}
+                            {{ form.delivery_type }}
+                            {{ form.delivery_type.errors }}
+                        </div>
 
-                        <button type="submit" id="submit-btn" class="btn">
-                            <div id="btn-progress" class="btn-progress"></div>
-                            <span id="btn-label" class="btn-label">Създай поръчка</span>
+                        <!-- Еконт полета -->
+                        <div id="econt-fields" class="hidden-section">
+
+                            <div class="form-group">
+                                <label for="econt-city">
+                                    Населено място
+                                </label>
+
+                                <select
+                                    id="econt-city"
+                                    name="econt_city_id"
+                                >
+                                    <option value="">
+                                        Зареждане на населените места...
+                                    </option>
+                                </select>
+
+                                <div class="help-text">
+                                    Избери населено място, за да заредим
+                                    наличните офиси на Еконт.
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="econt-office">
+                                    Офис на Еконт
+                                </label>
+
+                                <select
+                                    id="econt-office"
+                                    name="econt_office_code"
+                                    disabled
+                                >
+                                    <option value="">
+                                        Първо избери населено място
+                                    </option>
+                                </select>
+
+                                <div class="help-text">
+                                    Избери офиса, до който искаш да получиш
+                                    поръчката.
+                                </div>
+                            </div>
+
+                            <input
+                                type="hidden"
+                                id="econt-city-name"
+                                name="econt_city_name"
+                            >
+
+                            <input
+                                type="hidden"
+                                id="econt-office-id"
+                                name="econt_office_id"
+                            >
+
+                            <input
+                                type="hidden"
+                                id="econt-office-name"
+                                name="econt_office_name"
+                            >
+
+                            <input
+                                type="hidden"
+                                id="econt-office-address"
+                                name="econt_office_address"
+                            >
+                        </div>
+
+                        <!-- Поле за личен адрес -->
+                        <div
+                            id="address-fields"
+                            class="form-group hidden-section"
+                        >
+                            {{ form.delivery_details.label_tag }}
+                            {{ form.delivery_details }}
+                            {{ form.delivery_details.errors }}
+
+                            <div id="delivery-help" class="help-text">
+                                Въведи точен адрес за доставка.
+                            </div>
+                        </div>
+
+                        <div
+                            id="econt-error"
+                            class="custom-error"
+                            hidden
+                        ></div>
+
+                        <button
+                            type="submit"
+                            id="submit-btn"
+                            class="btn"
+                        >
+                            <div
+                                id="btn-progress"
+                                class="btn-progress"
+                            ></div>
+
+                            <span
+                                id="btn-label"
+                                class="btn-label"
+                            >
+                                Създай поръчка
+                            </span>
                         </button>
                     </form>
+
+                    <div class="info-box">
+                        След натискане на бутона поръчката ще бъде
+                        обработена и ще видиш страница за успешно
+                        създаване.
+                    </div>
                 </section>
 
                 <aside class="summary-card">
@@ -299,12 +520,31 @@
 
                     <div class="summary-row">
                         <span class="label-small">Локация</span>
-                        <span class="value">{{ location.name }}</span>
+                        <span class="value">
+                            {{ location.name }}
+                        </span>
                     </div>
 
                     <div class="summary-row">
                         <span class="label-small">Статус</span>
-                        <span class="value">Готова за поръчка</span>
+                        <span class="value">
+                            Готова за поръчка
+                        </span>
+                    </div>
+
+                    <div
+                        id="selected-delivery-summary"
+                        class="summary-row"
+                        style="display: none;"
+                    >
+                        <span class="label-small">
+                            Доставка
+                        </span>
+
+                        <span
+                            id="selected-delivery-value"
+                            class="value"
+                        ></span>
                     </div>
                 </aside>
             </div>
@@ -313,34 +553,449 @@
 
     <script>
         const orderForm = document.getElementById("order-form");
+
         const submitBtn = document.getElementById("submit-btn");
         const btnLabel = document.getElementById("btn-label");
         const btnProgress = document.getElementById("btn-progress");
-        const deliveryType = document.getElementById("delivery-type");
-        const deliveryDetails = document.getElementById("delivery-details");
-        const deliveryHelp = document.getElementById("delivery-help");
 
+        const deliveryType = document.getElementById("delivery-type");
+        const deliveryDetails = document.getElementById(
+            "delivery-details"
+        );
+
+        const econtFields = document.getElementById("econt-fields");
+        const addressFields = document.getElementById(
+            "address-fields"
+        );
+
+        const citySelect = document.getElementById("econt-city");
+        const officeSelect = document.getElementById(
+            "econt-office"
+        );
+
+        const cityNameInput = document.getElementById(
+            "econt-city-name"
+        );
+
+        const officeIdInput = document.getElementById(
+            "econt-office-id"
+        );
+
+        const officeNameInput = document.getElementById(
+            "econt-office-name"
+        );
+
+        const officeAddressInput = document.getElementById(
+            "econt-office-address"
+        );
+
+        const econtError = document.getElementById("econt-error");
+
+        const selectedDeliverySummary = document.getElementById(
+            "selected-delivery-summary"
+        );
+
+        const selectedDeliveryValue = document.getElementById(
+            "selected-delivery-value"
+        );
+
+        let citiesAreLoaded = false;
         let progressInterval = null;
         let progressValue = 0;
 
-        function updateDeliveryUI() {
-            if (!deliveryType || !deliveryDetails || !deliveryHelp) {
+
+        function showEcontError(message) {
+            econtError.textContent = message;
+            econtError.hidden = false;
+        }
+
+
+        function hideEcontError() {
+            econtError.textContent = "";
+            econtError.hidden = true;
+        }
+
+
+        async function getJson(url) {
+            const response = await fetch(url, {
+                method: "GET",
+                headers: {
+                    "Accept": "application/json"
+                }
+            });
+
+            let data;
+
+            try {
+                data = await response.json();
+            } catch (error) {
+                throw new Error(
+                    "Сървърът върна невалиден отговор."
+                );
+            }
+
+            if (!response.ok) {
+                throw new Error(
+                    data.error ||
+                    "Възникна грешка при зареждането."
+                );
+            }
+
+            return data;
+        }
+
+
+        async function loadEcontCities() {
+            if (citiesAreLoaded) {
                 return;
             }
 
-            const selected = deliveryType.value;
+            hideEcontError();
 
-            if (selected === "econt") {
-                deliveryDetails.placeholder = "Например: Еконт офис Пловдив Център";
-                deliveryHelp.textContent = "Въведи точен офис на Еконт, до който искаш доставка.";
-            } else if (selected === "address") {
-                deliveryDetails.placeholder = "Например: гр. Пловдив, ул. ..., номер ..., вход ..., етаж ...";
-                deliveryHelp.textContent = "Въведи точен личен адрес за доставка.";
-            } else {
-                deliveryDetails.placeholder = "Въведи данни за доставка";
-                deliveryHelp.textContent = "";
+            citySelect.disabled = true;
+            citySelect.innerHTML = `
+                <option value="">
+                    Зареждане на населените места...
+                </option>
+            `;
+
+            try {
+                const data = await getJson(
+                    "/api/econt/cities/"
+                );
+
+                citySelect.innerHTML = `
+                    <option value="">
+                        Избери населено място
+                    </option>
+                `;
+
+                const cities = data.cities || [];
+
+                for (const city of cities) {
+                    const option = document.createElement(
+                        "option"
+                    );
+
+                    option.value = city.id;
+                    option.dataset.cityName = city.name || "";
+
+                    let optionText = city.name || "Населено място";
+
+                    if (city.region) {
+                        optionText += `, обл. ${city.region}`;
+                    }
+
+                    if (city.post_code) {
+                        optionText += ` (${city.post_code})`;
+                    }
+
+                    option.textContent = optionText;
+
+                    citySelect.appendChild(option);
+                }
+
+                citySelect.disabled = false;
+                citiesAreLoaded = true;
+
+            } catch (error) {
+                citySelect.innerHTML = `
+                    <option value="">
+                        Населените места не са налични
+                    </option>
+                `;
+
+                showEcontError(error.message);
             }
         }
+
+
+        async function loadEcontOffices(cityId) {
+            clearSelectedOffice();
+            hideEcontError();
+
+            if (!cityId) {
+                officeSelect.disabled = true;
+
+                officeSelect.innerHTML = `
+                    <option value="">
+                        Първо избери населено място
+                    </option>
+                `;
+
+                return;
+            }
+
+            officeSelect.disabled = true;
+
+            officeSelect.innerHTML = `
+                <option value="">
+                    Зареждане на офисите...
+                </option>
+            `;
+
+            try {
+                const url =
+                    `/api/econt/offices/?city_id=${
+                        encodeURIComponent(cityId)
+                    }`;
+
+                const data = await getJson(url);
+                const offices = data.offices || [];
+
+                officeSelect.innerHTML = `
+                    <option value="">
+                        Избери офис на Еконт
+                    </option>
+                `;
+
+                if (offices.length === 0) {
+                    officeSelect.innerHTML = `
+                        <option value="">
+                            Няма намерени офиси
+                        </option>
+                    `;
+
+                    return;
+                }
+
+                for (const office of offices) {
+                    const option = document.createElement(
+                        "option"
+                    );
+
+                    option.value = office.code || office.id;
+
+                    option.dataset.officeId =
+                        office.id || "";
+
+                    option.dataset.officeName =
+                        office.name || "";
+
+                    option.dataset.officeAddress =
+                        office.address || "";
+
+                    let optionText =
+                        office.name ||
+                        `Офис ${office.code || ""}`;
+
+                    if (office.address) {
+                        optionText += ` — ${office.address}`;
+                    }
+
+                    if (office.is_aps) {
+                        optionText += " — Еконтомат";
+                    }
+
+                    option.textContent = optionText;
+
+                    officeSelect.appendChild(option);
+                }
+
+                officeSelect.disabled = false;
+
+            } catch (error) {
+                officeSelect.innerHTML = `
+                    <option value="">
+                        Офисите не са налични
+                    </option>
+                `;
+
+                showEcontError(error.message);
+            }
+        }
+
+
+        function clearSelectedOffice() {
+            officeIdInput.value = "";
+            officeNameInput.value = "";
+            officeAddressInput.value = "";
+
+            updateDeliverySummary();
+        }
+
+
+        function updateSelectedCity() {
+            const selectedOption =
+                citySelect.options[citySelect.selectedIndex];
+
+            cityNameInput.value =
+                selectedOption?.dataset.cityName || "";
+        }
+
+
+        function updateSelectedOffice() {
+            const selectedOption =
+                officeSelect.options[
+                    officeSelect.selectedIndex
+                ];
+
+            officeIdInput.value =
+                selectedOption?.dataset.officeId || "";
+
+            officeNameInput.value =
+                selectedOption?.dataset.officeName || "";
+
+            officeAddressInput.value =
+                selectedOption?.dataset.officeAddress || "";
+
+            updateDeliverySummary();
+        }
+
+
+        function resetEcontFields() {
+            citySelect.value = "";
+            cityNameInput.value = "";
+
+            officeSelect.disabled = true;
+
+            officeSelect.innerHTML = `
+                <option value="">
+                    Първо избери населено място
+                </option>
+            `;
+
+            clearSelectedOffice();
+            hideEcontError();
+        }
+
+
+        function updateDeliverySummary() {
+            if (!deliveryType) {
+                return;
+            }
+
+            if (
+                deliveryType.value === "econt" &&
+                officeNameInput.value
+            ) {
+                selectedDeliverySummary.style.display = "block";
+
+                selectedDeliveryValue.textContent =
+                    `${officeNameInput.value} — ${
+                        officeAddressInput.value
+                    }`;
+
+                return;
+            }
+
+            if (
+                deliveryType.value === "address" &&
+                deliveryDetails &&
+                deliveryDetails.value.trim()
+            ) {
+                selectedDeliverySummary.style.display = "block";
+
+                selectedDeliveryValue.textContent =
+                    deliveryDetails.value.trim();
+
+                return;
+            }
+
+            selectedDeliverySummary.style.display = "none";
+            selectedDeliveryValue.textContent = "";
+        }
+
+
+        function updateDeliveryUI() {
+            if (!deliveryType) {
+                return;
+            }
+
+            const selectedDeliveryType = deliveryType.value;
+
+            hideEcontError();
+
+            if (selectedDeliveryType === "econt") {
+                econtFields.style.display = "block";
+                addressFields.style.display = "none";
+
+                citySelect.required = true;
+                officeSelect.required = true;
+
+                if (deliveryDetails) {
+                    deliveryDetails.required = false;
+                    deliveryDetails.value = "";
+                }
+
+                loadEcontCities();
+
+            } else if (selectedDeliveryType === "address") {
+                econtFields.style.display = "none";
+                addressFields.style.display = "block";
+
+                citySelect.required = false;
+                officeSelect.required = false;
+
+                if (deliveryDetails) {
+                    deliveryDetails.required = true;
+
+                    deliveryDetails.placeholder =
+                        "Например: гр. Пловдив, ул. Иван Вазов №10, вход А, етаж 2";
+                }
+
+                resetEcontFields();
+
+            } else {
+                econtFields.style.display = "none";
+                addressFields.style.display = "none";
+
+                citySelect.required = false;
+                officeSelect.required = false;
+
+                if (deliveryDetails) {
+                    deliveryDetails.required = false;
+                }
+
+                resetEcontFields();
+            }
+
+            updateDeliverySummary();
+        }
+
+
+        function validateDeliveryFields() {
+            if (!deliveryType) {
+                return true;
+            }
+
+            if (deliveryType.value === "econt") {
+                if (!citySelect.value) {
+                    showEcontError(
+                        "Моля, избери населено място."
+                    );
+
+                    citySelect.focus();
+                    return false;
+                }
+
+                if (!officeSelect.value) {
+                    showEcontError(
+                        "Моля, избери офис на Еконт."
+                    );
+
+                    officeSelect.focus();
+                    return false;
+                }
+            }
+
+            if (deliveryType.value === "address") {
+                if (
+                    !deliveryDetails ||
+                    !deliveryDetails.value.trim()
+                ) {
+                    showEcontError(
+                        "Моля, въведи адрес за доставка."
+                    );
+
+                    deliveryDetails?.focus();
+                    return false;
+                }
+            }
+
+            return true;
+        }
+
 
         function startButtonProgress() {
             progressValue = 0;
@@ -359,26 +1014,74 @@
                     clearInterval(progressInterval);
                 }
 
-                btnProgress.style.width = `${progressValue}%`;
+                btnProgress.style.width =
+                    `${progressValue}%`;
+
             }, stepTime);
         }
 
-        if (deliveryType) {
-            updateDeliveryUI();
-            deliveryType.addEventListener("change", updateDeliveryUI);
+
+        citySelect.addEventListener(
+            "change",
+            function () {
+                updateSelectedCity();
+                loadEcontOffices(this.value);
+            }
+        );
+
+
+        officeSelect.addEventListener(
+            "change",
+            function () {
+                updateSelectedOffice();
+            }
+        );
+
+
+        if (deliveryDetails) {
+            deliveryDetails.addEventListener(
+                "input",
+                updateDeliverySummary
+            );
         }
 
-        orderForm.addEventListener("submit", function () {
-            submitBtn.disabled = true;
-            btnLabel.textContent = "Създавам...";
-            startButtonProgress();
 
-            setTimeout(() => {
-                orderForm.submit();
-            }, 3000);
+        if (deliveryType) {
+            updateDeliveryUI();
 
-            event.preventDefault(event);
-        });
+            deliveryType.addEventListener(
+                "change",
+                updateDeliveryUI
+            );
+        }
+
+
+        orderForm.addEventListener(
+            "submit",
+            function (event) {
+                event.preventDefault();
+
+                hideEcontError();
+
+                if (!orderForm.checkValidity()) {
+                    orderForm.reportValidity();
+                    return;
+                }
+
+                if (!validateDeliveryFields()) {
+                    return;
+                }
+
+                submitBtn.disabled = true;
+                btnLabel.textContent = "Създавам...";
+
+                startButtonProgress();
+
+                setTimeout(() => {
+                    orderForm.submit();
+                }, 3000);
+            }
+        );
     </script>
 </body>
 </html>
