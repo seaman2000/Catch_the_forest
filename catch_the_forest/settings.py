@@ -173,3 +173,10 @@ if not DEBUG:
     SESSION_COOKIE_SECURE = True
     SECURE_BROWSER_XSS_FILTER = True
     SECURE_CONTENT_TYPE_NOSNIFF = True
+
+
+# settings.py
+
+ECONT_API_BASE_URL = "https://demo.econt.com/ee/services"
+ECONT_USERNAME = "iasp-dev"
+ECONT_PASSWORD = "1Asp-dev"
