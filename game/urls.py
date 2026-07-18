@@ -14,7 +14,7 @@ urlpatterns = [
     path("profile/", views.profile_view, name="profile"),
     path("my-orders/", views.my_orders_view, name="my_orders"),
     path("caught-places/", views.caught_places_view, name="caught_places"),
-    
+
     path(
         "api/econt/cities/",
         views.econt_cities,
