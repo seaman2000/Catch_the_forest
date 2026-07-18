@@ -12,7 +12,7 @@ from .models import Location, Catch, Badge
 from .services.gps import is_within_radius
 
 
-from services.econt_api import (EcontAPIError, get_cities, get_offices)
+from .services.econt_api import (EcontAPIError, get_cities, get_offices)
 
 @require_GET
 def location_list(request):
