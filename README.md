@@ -30,7 +30,7 @@ This project simulates a small exploration game where users:
 ![Login](screenshots/my_profile.png)
 
 ### Badges
-![Badges](screenshots/badges.png)
+![Badges](screenshots/updated_badges.png)
 
 ---
 
