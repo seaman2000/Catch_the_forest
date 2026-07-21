@@ -32,7 +32,7 @@ def _post_to_econt(endpoint: str, payload: dict) -> dict[str, Any]:
 
     except ValueError as error:
         raise EcontAPIError(
-            "Еконт върна невалиден JSON отговор."
+            "Еконт върна невалиден отговор."
         ) from error
 
 
