@@ -110,7 +110,7 @@ def catch_location(request, location_id):
         return JsonResponse(
             {
                 "success": False,
-                "error": f"Не сте достатъчно близо. Разстояние: {distance:.1f} м.",
+                "error": f"Не сте достатъчно близо.",
             },
             status=400,
         )
